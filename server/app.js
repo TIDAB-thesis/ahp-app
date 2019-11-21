@@ -1,5 +1,5 @@
 const math = require('mathjs');
-const matrixUtils = require('../server/utils/MatrixUtils.js')
+const matrixUtils = require('./utils/MatrixUtils.js')
 let MatrixUtils = matrixUtils.MatrixUtils
 
 const m1 = math.matrix([
