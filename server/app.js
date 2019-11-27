@@ -1,20 +1,32 @@
-const math = require('mathjs');
-const matrixUtils = require('./utils/MatrixUtils.js')
-let MatrixUtils = matrixUtils.MatrixUtils
+const coolMath = require('./utils/CoolMath')
+const CRException = require('./exception/CRException')
 
-const m1 = math.matrix([
-  [1,3,7,math.fraction(1,3),7],
-  [math.fraction(1,3), 1, 5, math.fraction(1,5), 5],
-  [math.fraction(1,7), math.fraction(1,5), 1, math.fraction(1,7), 1],
-  [3, 5, 7, 1, 9],
-  [math.fraction(1,7), math.fraction(1,5), 1, math.fraction(1,9), 1]
-])
+const userPreference = {
+  "level1": [
+    ['1', '1/4', '5'],
+    ['4', '1', '9'],
+    ['1/5', '1/9', '1']
+  ],
+  "level2Data": [
+    ['1', '1/9', '1/3'],
+    ['9', '1', '5'],
+    ['3', '1/5', '1']
+  ],
+  "level2Performance": [
+    ['1', '7', '3'],
+    ['1/7', '1', '1/5'],
+    ['1/3', '5', '1']
+  ]
+}
 
-const matrix1 = new MatrixUtils(m1)
+const force = false
 
-const eigenvector = matrix1.getEigenvector()
-
-console.log(eigenvector)
-
-const cr = matrix1.getCR()
-console.log(cr)
+try {
+  const result = coolMath.getAssessment(userPreference, force)
+  console.log(result)
+} catch (err) {
+  if (err instanceof CRException) {
+    // Work in progress at least
+    console.log(err.name)
+  }
+}

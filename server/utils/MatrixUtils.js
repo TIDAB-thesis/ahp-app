@@ -3,47 +3,62 @@ const numeric = require('numeric');
 const math = create(all);
 math.import(numeric, { wrap: true, silent: true })
 
-const RI = [0.5245, 0.8815, 1.1086, 1.2479, 1.3417, 1.4056, 1.4499]
+const dataModels = require('./DataModels.js')
+const assessments = require('./Assessments')
+const matrixMath = require('./MatrixMath.js')
+let MatrixMath = matrixMath.MatrixMath
 
-class MatrixUtils {
-  constructor(matrix) {
-    this.matrix = matrix
-    this.dim = matrix._size[0]
-    this.RI = RI[this.dim - 3]
-  }
-
-  getEigenvector() {
-    this.maxEigenvalue = this._getEigenvalue()
-    this.eigenvectors = math.evaluate(`eig(${this.matrix})`).E.x
-
-    this.eigenvector = []
-    this.sum = 0
-
-    for(let i in this.eigenvectors) {
-      this.eigenvector[i] = this.eigenvectors[i][this.maxEigenvalue.index] 
-      this.sum += this.eigenvector[i]
-    }
-
-    for(let i in this.eigenvector) {
-      this.eigenvector[i] = this.eigenvector[i] / this.sum
-    }
-    return this.eigenvector
-  }
-
-  getCR() {
-    this.CI = (this._getEigenvalue().maxEigenvalue - this.dim) / (this.dim - 1)
-    this.CR = this.CI/this.RI
-
-    return this.CR
-  }
-
-  _getEigenvalue() {
-    this.eigValueArray = math.evaluate(`eig(${this.matrix})`).lambda.x
-    this.maxEigValue = Math.max(...this.eigValueArray)
-    this.indexOfEig = this.eigValueArray.indexOf(this.maxEigValue)
-
-    return {"maxEigenvalue": this.maxEigValue, "index": this.indexOfEig}
-  }
+function sortResult(resultMatrix) {
+  const combinedMatrix = _combineResultWithModel(resultMatrix)
+  return combinedMatrix.sort(_compare)
 }
 
-module.exports = { MatrixUtils }
+function _combineResultWithModel(resultMatrix) {
+  const sortedResult = []
+  for(key in resultMatrix) {
+    sortedResult[key] = {"name": dataModels[key], "result": resultMatrix[key]}
+  }
+  return sortedResult
+}
+
+function _compare(a, b) {
+  const resultA = a.result
+  const resultB = b.result
+  if (resultA > resultB) {
+    return -1
+  }
+  if (resultA < resultB) {
+    return 1
+  }
+  return 0
+}
+
+function getFractionizedMatrix(matrix) {
+  const fractionizedMatrix = []
+  for(keyLvl1 in matrix) {
+    const fractionizedRow = math.fraction(matrix[keyLvl1])
+    fractionizedMatrix.splice(keyLvl1, 0, fractionizedRow)
+  }
+  return new MatrixMath(math.matrix(fractionizedMatrix))
+}
+
+function getAssessmentAsNormalized() {
+  const normalizedMatrix = []
+  for(let assessment in assessments) {
+    let obj = math.matrix(assessments[assessment])
+    const matrix = new MatrixMath(obj)
+    const normalizedVector = matrix.getNormalizedEigenvector()
+    normalizedMatrix.push(normalizedVector)
+  }
+  const normMatrix = math.matrix(normalizedMatrix)
+  const transposedNorm = math.transpose(normMatrix)
+  return transposedNorm
+}
+
+module.exports = {
+  sortResult,
+  _combineResultWithModel,
+  _compare,
+  getFractionizedMatrix,
+  getAssessmentAsNormalized
+}
