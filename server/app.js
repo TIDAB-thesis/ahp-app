@@ -1,32 +1,60 @@
-const coolMath = require('./utils/CoolMath')
+const coolMath = require('./mathUtils/CoolMath')
 const CRException = require('./exception/CRException')
+const data = require('./utils/data.json')
 
-const userPreference = {
-  "level1": [
-    ['1', '1/4', '5'],
-    ['4', '1', '9'],
-    ['1/5', '1/9', '1']
-  ],
-  "level2Data": [
-    ['1', '1/9', '1/3'],
-    ['9', '1', '5'],
-    ['3', '1/5', '1']
-  ],
-  "level2Performance": [
-    ['1', '7', '3'],
-    ['1/7', '1', '1/5'],
-    ['1/3', '5', '1']
-  ]
-}
+const express = require('express')
+const app = express()
+const port = 3000
+const bodyParser = require('body-parser')
 
-const force = false
+app.use(
+  bodyParser.urlencoded({
+    extended: true
+  })
+)
 
-try {
-  const result = coolMath.getAssessment(userPreference, force)
-  console.log(result)
-} catch (err) {
-  if (err instanceof CRException) {
-    // Work in progress at least
-    console.log(err.name)
+app.use(bodyParser.json())
+
+app.get('/getAssessment', (req, res) => {
+  const userPreference = req.body.userPreference
+  const force = req.body.force
+
+  try {
+    const result = coolMath.getAssessment(userPreference, force)
+    console.log(result)
+    res.send(result)
+  } catch (err) {
+    if (err instanceof CRException) {
+      // Work in progress at least
+      //TODO: Fix so it send the error to client
+      console.log(err.name)
+    }
   }
-}
+})
+
+app.get('/criteria', (req, res) => {
+  res.json(data)
+})
+
+app.post('/getAssessment', (req, res) => {
+
+  const userPreference = req.body.userPreference
+  const force = req.body.force
+
+  try {
+    const result = coolMath.getAssessment(userPreference, force)
+    console.log(result)
+    res.send(result)
+  } catch (err) {
+    if (err instanceof CRException) {
+      // Work in progress at least
+      //TODO: Fix so it send the error to client
+      console.log(err.name)
+    }
+  }
+})
+
+app.listen(port, () => {
+  console.log(`Server listening on port ${port}`)
+})
+

@@ -1,0 +1,42 @@
+[
+  {
+    "name": "Data Model",
+    "description": "What structural characteristics that the data model have.",
+    "subcriteria": [
+      {
+        "name": "Many-to-many",
+        "description": "How well many-to-many relationships (including entities with properties) are modelled."
+      },
+      {
+        "name": "One-to-many",
+        "description": "How well one-to-many relationships (including entities with properties) are modelled."
+      },
+      {
+        "name": "Flexibility",
+        "description": "If you need your data model to support schema on read flexilibity."
+      }
+    ]
+  },
+  {
+    "name": "Performance",
+    "description": "How fast the database is and how much load it can take.",
+    "subcriteria": [
+      {
+        "name": "Read",
+        "description": "How fast the data models reads data."
+      },
+      {
+        "name": "Write/Update",
+        "description": "How fast the data models writes and updates data."
+      },
+      {
+        "name": "Scalability",
+        "description": "How well the data model can scale up to support more intensive loads."
+      }
+    ]
+  },
+  {
+    "name": "Transactions",
+    "description": "To what extent the data model can perform transactions, and how well those transactions perform."
+  }
+]

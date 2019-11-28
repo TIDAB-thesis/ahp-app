@@ -3,8 +3,8 @@ const numeric = require('numeric');
 const math = create(all);
 math.import(numeric, { wrap: true, silent: true })
 
-const dataModels = require('./DataModels.js')
-const assessments = require('./Assessments')
+const dataModels = require('../utils/DataModels.js')
+const assessments = require('../utils/Assessments')
 const matrixMath = require('./MatrixMath.js')
 let MatrixMath = matrixMath.MatrixMath
 

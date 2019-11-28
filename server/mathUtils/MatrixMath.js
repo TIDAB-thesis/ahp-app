@@ -2,7 +2,6 @@ const { create, all } = require('mathjs');
 const numeric = require('numeric');
 const math = create(all);
 math.import(numeric, { wrap: true, silent: true })
-const assessments = require('./Assessments')
 
 const RI = [0.5245, 0.8815, 1.1086, 1.2479, 1.3417, 1.4056, 1.4499]
 
