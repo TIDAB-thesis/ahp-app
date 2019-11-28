@@ -13,6 +13,7 @@
 import Alternative from './Alternative'
 import Slider from './Slider'
 import Assesser from '../logic/Asesser'
+import AssessmentService from '../services/AssessmentService'
 
 export default {
   name: 'Carousel',
@@ -52,13 +53,21 @@ export default {
         throw err
       }
     },
-    rate(val) {
+    async rate(val) {
       this.assessments.push(val)
       try {
         this.next()
       } catch(err) {
         if (err.done) {
           this.assesser.assessAll(this.assessments)
+          const result = this.assesser.getAssessmentArrays()
+          console.log(result)
+          console.log(AssessmentService)
+          const netRes = await AssessmentService.getAssessment({
+            userPreference: result,
+            force: true
+          })
+          alert(netRes.data[0].name)
         }
       }
     }

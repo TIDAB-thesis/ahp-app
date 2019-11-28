@@ -1,13 +1,18 @@
-const axios = require('axios')
+import axios from 'axios'
+
+const instance = axios.create({
+  baseURL: 'http://localhost:3000',
+})
 
 class AssessmentService {
   static getCriteria() {
-    return axios.get('/criteria')
+    return instance.get('/criteria')
   }
 
   static getAssessment(assessment) {
-    return axios.get('/getAssessment', assessment)
+    console.log(assessment)
+    return instance.post('/getAssessment', assessment)
   }
 }
 
-module.exports = { AssessmentService }
+export default AssessmentService

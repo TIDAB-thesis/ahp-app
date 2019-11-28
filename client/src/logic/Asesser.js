@@ -140,15 +140,17 @@ export default class Asesser {
         this._fillUpperTriangle(stringRatings.slice(6, 9), this.assessment.level2Performance)
       }
     }
-    this.__printArray(this.assessment.level1, 'Level 1')
-    this.__printArray(this.assessment.level2Data, 'Level 2 Data')
-    this.__printArray(this.assessment.level2Performance, 'Level 2 Performance')
     this._completeArray(this.assessment.level1)
     this._completeArray(this.assessment.level2Data)
     this._completeArray(this.assessment.level2Performance)
-    this.__printArray(this.assessment.level1, 'Level 1')
-    this.__printArray(this.assessment.level2Data, 'Level 2 Data')
-    this.__printArray(this.assessment.level2Performance, 'Level 2 Performance')
+  }
+
+  getAssessmentArrays() {
+    return {
+      level1: this.assessment.level1,
+      level2Data: this.assessment.level2Data,
+      level2Performance: this.assessment.level2Performance
+    }
   }
 
   _fillUpperTriangle(ratings, array) {
@@ -161,15 +163,15 @@ export default class Asesser {
   }
   
   _completeArray(array) {
-    console.log('repocrial')
     for (let i = 0; i < array.length; i++) {
       for (let j = 0; j < i; j++) {
         const assessmentValue = array[j][i];
         if (assessmentValue.indexOf('/') >= 0) {
           array[i][j] = assessmentValue.substr(2,1)
+        } else if (assessmentValue === '1') {
+          array[i][j] = assessmentValue
         } else {
           array[i][j] = `1/${assessmentValue}`
-          console.log('hej sabina')
         }
       }
     }
