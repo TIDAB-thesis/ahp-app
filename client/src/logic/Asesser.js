@@ -1,7 +1,7 @@
 const dummyData = [
   {
     name: 'Data Model',
-    description: 'What characteristics that the data model should be good at.',
+    description: 'What structural characteristics that the data model have.',
     subcriteria: [
       {
         name: 'Many-to-many',
@@ -39,7 +39,28 @@ const dummyData = [
     name: 'Transactions',
     description: 'To what extent the data model can perform transactions, and how well those transactions perform.'
   },
-];
+]
+
+// const exampleJSON = {
+//   "userPreference": {
+// 		"level1": [
+// 				["1", "1/4", "5"],
+// 				["4", "1", "9"],
+// 				["1/5", "1/9", "1"]
+// 		],
+// 		"level2Data": [
+// 			["1", "1/9", "1/3"],
+// 			["9", "1", "5"],
+// 			["3", "1/5", "1"]
+// 		],
+// 		"level2Performance": [
+// 			["1", "7", "3"],
+// 			["1/7", "1", "1/5"],
+// 			["1/3", "5", "1"]
+// 		]
+// 	},
+// 	"force": false
+// }
 
 export default class Asesser {
 
@@ -48,12 +69,31 @@ export default class Asesser {
     if (this.criteria.length < 2) {
       throw new Error('Each level of criteria must be at least of length 2')
     }
-    this.assessmentList = this._getComparisonList(new Array(), this.criteria)
-    // DEBUG
-    this.assessmentList.forEach(ele => {
-      console.log(ele.mainCriteria.name, 'vs' ,ele.secondaryCriteria.name)
-    });
+    this.criteriaList = this._getComparisonList(new Array(), this.criteria)
+    this.assessment = {
+      level1: [
+        [0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0]
+      ],
+      level2Data: [
+        [0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0]
+      ],
+      level2Performance: [
+        [0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0]
+      ]
+    }
+    for (const ass in this.assessment) {
+      for (let arr in ass) {
+        this.assessment[arr] = new Array(3).fill(0)
+      }
+    }
     this.index = 0
+    this.assessed = true
   }
 
   _getComparisonList(arr, criteria) {
@@ -71,24 +111,86 @@ export default class Asesser {
   }
 
   getNextPair() {
-    console.log('GET NEXT PAIR ---')
+    if (!this.assessed) {
+      throw new Error('You must asses the last pair before asking for the next one')
+    }
     const comparisonPair = {
       mainCriteria: {
-        name: this.assessmentList[this.index].mainCriteria.name,
-        description: this.assessmentList[this.index].mainCriteria.description
+        name: this.criteriaList[this.index].mainCriteria.name,
+        description: this.criteriaList[this.index].mainCriteria.description
       },
       secondaryCriteria: {
-        name: this.assessmentList[this.index].secondaryCriteria.name,
-        description: this.assessmentList[this.index].secondaryCriteria.description
+        name: this.criteriaList[this.index].secondaryCriteria.name,
+        description: this.criteriaList[this.index].secondaryCriteria.description
       }
     }
-    console.log('====>index:',this.index)
     this.index++
-    console.log('index:',this.index)
     return comparisonPair
   }
 
+  assessAll(ratings) {
+    const stringRatings = ratings.map((e) => e < 0 ? `1/${Math.abs(e)}` : `${Math.abs(e)}`)
+    for (let index = 0; index < stringRatings.length; index += 3) {
+      if (index < 3) { // level1
+        this._fillUpperTriangle(stringRatings.slice(0, 3), this.assessment.level1)
+        
+      } else if (index < 6) {
+        this._fillUpperTriangle(stringRatings.slice(3, 6), this.assessment.level2Data)
+      } else {
+        this._fillUpperTriangle(stringRatings.slice(6, 9), this.assessment.level2Performance)
+      }
+    }
+    this.__printArray(this.assessment.level1, 'Level 1')
+    this.__printArray(this.assessment.level2Data, 'Level 2 Data')
+    this.__printArray(this.assessment.level2Performance, 'Level 2 Performance')
+    this._completeArray(this.assessment.level1)
+    this._completeArray(this.assessment.level2Data)
+    this._completeArray(this.assessment.level2Performance)
+    this.__printArray(this.assessment.level1, 'Level 1')
+    this.__printArray(this.assessment.level2Data, 'Level 2 Data')
+    this.__printArray(this.assessment.level2Performance, 'Level 2 Performance')
+  }
+
+  _fillUpperTriangle(ratings, array) {
+    let index = 0
+    for (let i = 0; i < array.length - 1; i++) {
+      for (let j = i + 1; j < array[i].length; j++) {
+        array[i][j] = ratings[index++]
+      }
+    }
+  }
+  
+  _completeArray(array) {
+    console.log('repocrial')
+    for (let i = 0; i < array.length; i++) {
+      for (let j = 0; j < i; j++) {
+        const assessmentValue = array[j][i];
+        if (assessmentValue.indexOf('/') >= 0) {
+          array[i][j] = assessmentValue.substr(2,1)
+        } else {
+          array[i][j] = `1/${assessmentValue}`
+          console.log('hej sabina')
+        }
+      }
+    }
+    for (let i = 0, j = 0; i < array.length; i++, j++) {
+        array[i][j] = '1'
+    }
+  }
+
   hasNext() {
-    return this.index < this.assessmentList.length
+    return this.index < this.criteriaList.length
+  }
+
+  __printArray(arr, name) {
+    console.log('ARRAY:', name)
+    for (let i = 0; i < arr.length; i++) {
+      const row = []
+      for (let j = 0; j < arr[i].length; j++) {
+        row.push(arr[i][j])
+      }
+      console.log(row);
+    }
+    console.log('============')
   }
 }

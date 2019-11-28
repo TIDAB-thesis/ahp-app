@@ -12,6 +12,7 @@ module.exports = {
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'vue/singleline-html-element-content-newline': 'off',
-    'vue/v-bind-style': 'longform'
+    'vue/v-bind-style': 'longform',
+    'vue/max-attributes-per-line': 'off'
   }
 }
