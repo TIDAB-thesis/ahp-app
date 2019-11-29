@@ -51,6 +51,7 @@ app.post('/getAssessment', (req, res) => {
 
       res.status(400).json(inputMissingException)
     }
+    res.status(500)
   }
 })
 
