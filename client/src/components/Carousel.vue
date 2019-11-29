@@ -55,6 +55,7 @@ export default {
       this.done = false
       this.init()
       this.assessments = []
+      this.errorMessage = undefined
       this.$emit('restart')
     },
     init() {
@@ -98,7 +99,7 @@ export default {
       } catch (err) {
         if (err.response.status === 400) {
           const data = err.response.data
-          this.errorMessage = `You had an inconsistency level of more than 0.1: ${data.crIndex} on your answers.`
+          this.errorMessage = `You had an inconsistency level of more than 0.1: ${data.crIndex.toFixed(3)} on your answers.`
         } else {
           alert('Bad server error >:(')
         }
