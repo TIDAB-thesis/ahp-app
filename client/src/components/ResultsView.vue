@@ -1,10 +1,15 @@
 <template>
   <div class="container">
     <div>
-      <h2>Results:</h2>
-      <ol class="result-list">
-        <li v-for="result in results" v-bind:key="result.name">{{ result.name }}: {{ result.result.toFixed(3) }}</li>
-      </ol>
+      <h1>Results:</h1>
+      <div style="display: flex; flex-direction: row">
+        <ol class="result-list">
+          <li v-for="result in results" v-bind:key="result.name">{{ result.name }}</li>
+        </ol>
+        <ul class="result-list" style="list-style: none">
+          <li v-for="result in results" v-bind:key="result.name">{{ result.result.toFixed(3) }}</li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
@@ -24,19 +29,18 @@ export default {
   }
 
   .result-list > li:first-child {
-    font-size: 2em;
-    font-weight: bold;
     color: green;
+    font-weight: bold;
   }
 
   .result-list > li:nth-child(2) {
-    font-size: 1.5em;
+    color: #ff8800;
     font-weight: bold;
-    color: orange;
   }
 
   .result-list > li {
-    font-weight: bold;
+    font-size: 1.5em;
+    /* font-weight: bold; */
   }
 
   .container {
