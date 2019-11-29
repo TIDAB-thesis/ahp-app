@@ -13,6 +13,7 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'vue/singleline-html-element-content-newline': 'off',
     'vue/v-bind-style': 'longform',
-    'vue/max-attributes-per-line': 'off'
+    'vue/max-attributes-per-line': 'off',
+    'vue/require-default-prop': 'off'
   }
 }
