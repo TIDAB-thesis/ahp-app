@@ -2,13 +2,13 @@
   <div>
     <div class="labels">
       <div class="label-container"><span class="label main">Extremely</span></div>
-      <div class="label-container"><span class="label main">Very Strong</span></div>
-      <div class="label-container"><span class="label main">Strong</span></div>
-      <div class="label-container"><span class="label main">Moderate</span></div>
+      <div class="label-container"><span class="label main plus-three">Very Strong</span></div>
+      <div class="label-container"><span class="label main plus-two">Strong</span></div>
+      <div class="label-container"><span class="label main plus-one">Moderate</span></div>
       <div class="label-container"><span class="label">Equal</span></div>
-      <div class="label-container"><span class="label secondary">Moderate</span></div>
-      <div class="label-container"><span class="label secondary">Storng</span></div>
-      <div class="label-container"><span class="label secondary">Very Strong</span></div>
+      <div class="label-container"><span class="label secondary minus-one">Moderate</span></div>
+      <div class="label-container"><span class="label secondary minus-two">Storng</span></div>
+      <div class="label-container"><span class="label secondary minus-three">Very Strong</span></div>
       <div class="label-container"><span class="label secondary">Extremely</span></div>
     </div>
     <input id="preference-slider" v-model="selectedValue" type="range" name="Hej" min="-8" max="8" step="1">
@@ -86,5 +86,25 @@ export default {
 
   .selected-value {
     font-weight: bold;
+  }
+
+  .plus-one {
+    transform: translate(15px,0) rotate(180deg);
+  }
+  .plus-two {
+    transform: translate(8px,0) rotate(180deg);
+  }
+  .plus-three {
+    transform: translate(4px,0) rotate(180deg);
+  }
+
+  .minus-one {
+    transform: translate(-15px,0) rotate(180deg);
+  }
+  .minus-two {
+    transform: translate(-8px,0) rotate(180deg);
+  }
+  .minus-three {
+    transform: translate(-4px,0) rotate(180deg);
   }
 </style>
