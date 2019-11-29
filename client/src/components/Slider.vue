@@ -33,7 +33,7 @@ export default {
       index = Math.abs(index)
       let selectedString = ''
       if (index % 2 === 0) {
-        selectedString = `${assessmentNames[(index - 2) / 2]}-${assessmentNames[index / 2]}`
+        selectedString = `${assessmentNames[(index - 2) / 2]} - ${assessmentNames[index / 2]}`
       } else {
         selectedString = assessmentNames[Math.floor((index - 1) / 2)]
       }
