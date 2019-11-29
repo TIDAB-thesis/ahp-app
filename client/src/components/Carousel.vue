@@ -3,17 +3,18 @@
     <h2>How important is {{ main.name }} compared to {{ secondary.name }}?</h2>
     <div id="carousel">
       <Alternative v-bind:name="main.name" v-bind:description="main.description" />
-      <Slider v-if="!done" @assessment="rate" />
-      <button v-if="done" @click="restart">Restart?</button>
-      <Alternative v-bind:name="secondary.name" v-bind:description="secondary.description" />
+      <Slider v-if="!done && !errorMessage" @assessment="rate" />
       <div v-if="errorMessage">
-        <p id="error-display">
-          {{ errorMessage }}.
+        <p class="error-message">
+          {{ errorMessage }}
         </p>
         Restart: <button @click="restart">Restart</button>
-        See results anyway: <button @click="getAssessment(true)"></button>
+        <br>
+        <br>
+        See results anyway: <button @click="getAssessment(true)">Send anyways</button>
       </div>
-      
+      <button v-if="done" @click="restart">Restart?</button>
+      <Alternative v-bind:name="secondary.name" v-bind:description="secondary.description" />
     </div>
   </div>
 </template>
@@ -86,15 +87,21 @@ export default {
     async getAssessment(force = false) {
       this.assesser.assessAll(this.assessments)
       const result = this.assesser.getAssessmentArrays()
-      const netRes = await AssessmentService.getAssessment({
-        userPreference: result,
-        force
-      })
-      if (netRes.errorMessage) {
-        this.errorMessage = `You had an inconsistency level of more than 0.1: ${netRes.crIndex} on your answers.`
-      } else {
-        this.$emit('result', netRes.data)
+      try {
+        const resultData = await AssessmentService.getAssessment({
+          userPreference: result,
+          force
+        })
+        this.$emit('result', resultData.data)
         this.done = true
+        this.errorMessage = undefined
+      } catch (err) {
+        if (err.response.status === 400) {
+          const data = err.response.data
+          this.errorMessage = `You had an inconsistency level of more than 0.1: ${data.crIndex} on your answers.`
+        } else {
+          alert('Bad server error >:(')
+        }
       }
     }
   }
@@ -112,5 +119,10 @@ export default {
   #carousel > * {
     flex-grow: 1;
     flex-basis: 0;
+  }
+
+  .error-message {
+    font-weight: bold;
+    color: darkred;
   }
 </style>

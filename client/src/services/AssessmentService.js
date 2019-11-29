@@ -10,7 +10,6 @@ class AssessmentService {
   }
 
   static getAssessment(assessment) {
-    console.log(assessment)
     return instance.post('/getAssessment', assessment)
   }
 }
