@@ -3,8 +3,17 @@
     <h2>How important is {{ main.name }} compared to {{ secondary.name }}?</h2>
     <div id="carousel">
       <Alternative v-bind:name="main.name" v-bind:description="main.description" />
-      <Slider @assessment="rate" />
+      <Slider v-if="!done" @assessment="rate" />
+      <button v-if="done" @click="restart">Restart?</button>
       <Alternative v-bind:name="secondary.name" v-bind:description="secondary.description" />
+      <div v-if="errorMessage">
+        <p id="error-display">
+          {{ errorMessage }}.
+        </p>
+        Restart: <button @click="restart">Restart</button>
+        See results anyway: <button @click="getAssessment(true)"></button>
+      </div>
+      
     </div>
   </div>
 </template>
@@ -23,6 +32,8 @@ export default {
   },
   data() {
     return {
+      done: false,
+      errorMessage: undefined,
       assesser: null,
       assessments: [],
       main: {
@@ -36,13 +47,22 @@ export default {
     }
   },
   created() {
-    this.assesser = new Assesser()
-    const { mainCriteria, secondaryCriteria } = this.assesser.getNextPair()
-    this.main = mainCriteria
-    this.secondary = secondaryCriteria
+    this.init()
   },
   methods: {
-    next: function() {
+    restart() {
+      this.done = false
+      this.init()
+      this.assessments = []
+      this.$emit('restart')
+    },
+    init() {
+      this.assesser = new Assesser()
+      const { mainCriteria, secondaryCriteria } = this.assesser.getNextPair()
+      this.main = mainCriteria
+      this.secondary = secondaryCriteria
+    },
+    next() {
       if (this.assesser.hasNext()) {
         const {mainCriteria, secondaryCriteria} = this.assesser.getNextPair()
         this.main = mainCriteria
@@ -53,22 +73,28 @@ export default {
         throw err
       }
     },
-    async rate(val) {
+    rate(val) {
       this.assessments.push(val)
       try {
         this.next()
       } catch(err) {
         if (err.done) {
-          this.assesser.assessAll(this.assessments)
-          const result = this.assesser.getAssessmentArrays()
-          console.log(result)
-          console.log(AssessmentService)
-          const netRes = await AssessmentService.getAssessment({
-            userPreference: result,
-            force: true
-          })
-          alert(netRes.data[0].name)
+          this.getAssessment();
         }
+      }
+    },
+    async getAssessment(force = false) {
+      this.assesser.assessAll(this.assessments)
+      const result = this.assesser.getAssessmentArrays()
+      const netRes = await AssessmentService.getAssessment({
+        userPreference: result,
+        force
+      })
+      if (netRes.errorMessage) {
+        this.errorMessage = `You had an inconsistency level of more than 0.1: ${netRes.crIndex} on your answers.`
+      } else {
+        this.$emit('result', netRes.data)
+        this.done = true
       }
     }
   }

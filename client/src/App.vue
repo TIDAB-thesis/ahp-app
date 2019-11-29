@@ -2,7 +2,8 @@
   <div id="app">
     <Header />
     <main>
-      <Carousel />
+      <Carousel @restart="reset" @result="displayResults" />
+      <ResultsView v-if="results !== undefined" v-bind:results="results" />
     </main>
     <Footer />
   </div>
@@ -11,6 +12,7 @@
 <script>
 import 'normalize.css'
 import Carousel from './components/Carousel.vue'
+import ResultsView from './components/ResultsView.vue'
 import Header from './components/fragments/Header.vue'
 import Footer from './components/fragments/Footer.vue'
 
@@ -19,7 +21,21 @@ export default {
   components: {
     Header,
     Carousel,
+    ResultsView,
     Footer
+  },
+  data() {
+    return {
+      results: undefined
+    }
+  },
+  methods: {
+    displayResults(results) {
+      this.results = results
+    },
+    reset() {
+      this.results = undefined
+    }
   }
 }
 </script>
