@@ -1,6 +1,6 @@
-const coolMath = require('./mathUtils/CoolMath')
-const CRException = require('./exception/CRException')
-const InputException = require('./exception/InputException')
+const coolMath = require('./mathUtils/coolMath')
+const CRException = require('./exception/crException')
+const InputException = require('./exception/inputException')
 const data = require('./utils/data.json')
 
 const express = require('express')

@@ -12,6 +12,10 @@ class MatrixMath {
     this.RI = RI[this.dim - 3]
   }
 
+  /**
+   * Calculates the eigenvector for a matrix
+   * @return the normalized eigenvector
+   */
   getNormalizedEigenvector() {
     this.maxEigenvalue = this._getEigenvalue()
     this.eigenvectors = math.evaluate(`eig(${this.matrix})`).E.x
@@ -30,6 +34,10 @@ class MatrixMath {
     return this.eigenvector
   }
 
+  /**
+   * Calculates the CR index of a given matrix
+   * @return the CR index
+   */
   getCR() {
     this.CI = (this._getEigenvalue().maxEigenvalue - this.dim) / (this.dim - 1)
     this.CR = this.CI/this.RI
@@ -37,6 +45,10 @@ class MatrixMath {
     return this.CR
   }
 
+  /**
+   * Calculates the eigenvalue of a matrix
+   * @return an object with the maximum eigenvalue and which index the maximum eigenvalue is at
+   */
   _getEigenvalue() {
     this.eigValueArray = math.evaluate(`eig(${this.matrix})`).lambda.x
     this.maxEigValue = Math.max(...this.eigValueArray)

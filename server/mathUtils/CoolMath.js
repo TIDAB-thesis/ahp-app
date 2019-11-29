@@ -2,11 +2,17 @@ const { create, all } = require('mathjs');
 const numeric = require('numeric');
 const math = create(all);
 math.import(numeric, { wrap: true, silent: true })
-const matrixMath = require('./MatrixMath.js')
+const matrixMath = require('./matrixMath.js')
 let MatrixMath = matrixMath.MatrixMath
-const CRException = require('../exception/CRException')
-const matrixUtils = require('./MatrixUtils')
+const CRException = require('../exception/crException')
+const matrixUtils = require('./matrixUtils')
 
+/**
+ * Calculates which data model fits the user preference the best
+ * @param {Object} userPreference contains the user preferences 
+ * @param {Boolean} force if the user wants to consider the cr index or not
+ * @return an sorted object with which data model fits the user preference the best
+ */
 function getAssessment(userPreference, force) {
   level1 = matrixUtils.getFractionizedMatrix(userPreference.level1)
   level2Data = matrixUtils.getFractionizedMatrix(userPreference.level2Data)
@@ -20,7 +26,7 @@ function getAssessment(userPreference, force) {
   const weightLvl2Data = new MatrixMath(math.matrix(level2Data.getNormalizedEigenvector()))
   const weightLvl2Perf = new MatrixMath(math.matrix(level2Perf.getNormalizedEigenvector()))
 
-  const transposedAssessment = matrixUtils.getAssessmentAsNormalized()
+  const transposedAssessment = matrixUtils.getDataModelWeightMatrix()
 
   const weights = _flattenUserChoice(weightLvl1, weightLvl2Data, weightLvl2Perf)
 
@@ -29,6 +35,12 @@ function getAssessment(userPreference, force) {
   return sortedResult
 }
 
+/**
+ * Fetches the CR index for each user preference matrix. Throws exception if the CR index is larger than 10%
+ * @param {Matrix} level1 user preference for criteria on level 1 
+ * @param {Matrix} level2Data user preference for criteria on level 2 data model
+ * @param {Matrix} level2Perf user preference for criteria on level 2 performance
+ */
 function _calculateCR(level1, level2Data, level2Perf) {
   level1CR = level1.getCR()
   level2DataCR = level2Data.getCR()
@@ -47,6 +59,12 @@ function _calculateCR(level1, level2Data, level2Perf) {
   }
 }
 
+/**
+ * Flattens the users preferences into one large matrix
+ * @param {Matrix} lvl1Weight user preference for criteria on level 1
+ * @param {Matrix} lvl2WeightData user preference for criteria on level 2 data model
+ * @param {Matrix} lvl2WeightPerf user preference for criteria on level 2 performance 
+ */
 function _flattenUserChoice(lvl1Weight, lvl2WeightData, lvl2WeightPerf) {
   const newUserMatrix = []
   const lvl1Data = lvl1Weight.matrix._data[0]
