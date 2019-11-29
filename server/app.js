@@ -1,5 +1,6 @@
 const coolMath = require('./mathUtils/CoolMath')
 const CRException = require('./exception/CRException')
+const InputException = require('./exception/InputException')
 const data = require('./utils/data.json')
 
 const express = require('express')
@@ -8,29 +9,13 @@ const port = 3000
 const bodyParser = require('body-parser')
 
 app.use(require('cors')())
+
 app.use(
   bodyParser.urlencoded({
     extended: true
   })
 )
 app.use(bodyParser.json())
-
-app.get('/getAssessment', (req, res) => {
-  const userPreference = req.body.userPreference
-  const force = req.body.force
-
-  try {
-    const result = coolMath.getAssessment(userPreference, force)
-    console.log(result)
-    res.send(result)
-  } catch (err) {
-    if (err instanceof CRException) {
-      // Work in progress at least
-      //TODO: Fix so it send the error to client
-      console.log(err.name)
-    }
-  }
-})
 
 app.get('/criteria', (req, res) => {
   res.json(data)
@@ -42,17 +27,38 @@ app.post('/getAssessment', (req, res) => {
   const force = req.body.force
 
   try {
-    const result = coolMath.getAssessment(userPreference, force)
-    console.log(result)
-    res.send(result)
+    checkValidity(userPreference.level1, 'Level 1')
+    checkValidity(userPreference.level2Data, 'Level 2 Data model')
+    checkValidity(userPreference.level2Performance, 'Level 2 Performance')
+    checkValidity(force)
+
+    const finalAssessment = coolMath.getAssessment(userPreference, force)
+
+    res.send(finalAssessment)
   } catch (err) {
     if (err instanceof CRException) {
-      // Work in progress at least
-      //TODO: Fix so it send the error to client
-      console.log(err.name)
+      crExceptionMessage = {
+        "level": err.offendee,
+        "crIndex": err.crIndex
+      }
+      
+      res.status(400).json(crExceptionMessage)
+    }
+    if(err instanceof InputException) {
+      inputMissingException = {
+        "missingInput": err.missingInput
+      }
+
+      res.status(400).json(inputMissingException)
     }
   }
 })
+
+function checkValidity(input, inputName) {
+  if (input === undefined) {
+    throw new InputException('Missing input', inputName)
+  }
+}
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`)
