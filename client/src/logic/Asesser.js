@@ -1,7 +1,7 @@
 const dummyData = [
   {
     name: 'Data Model',
-    description: 'What structural characteristics that the data model have.',
+    description: 'What structural characteristics that the data model should have. Such as the types of relationships it can efficiently represent and the flexibility of the structure.',
     subcriteria: [
       {
         name: 'Many-to-many',
@@ -13,31 +13,31 @@ const dummyData = [
       },
       {
         name: 'Flexibility',
-        description: 'If you need your data model to support schema on read flexilibity.',
+        description: 'If you need your data model to support schema on read flexibility. In other words it should allow almost any structure to be written without changing any schema.',
       },
     ]
   },
   {
     name: 'Performance',
-    description: 'How fast the database is and how much load it can take.',
+    description: 'How fast the database is and how much load it can take. This includes the write/update and read performance (in terms of speed), as well as its ability to scale up to support more intensive loads.',
     subcriteria: [
       {
         name: 'Read',
-        description: 'How fast the data models reads data.',
+        description: 'How fast the data is read.',
       },
       {
         name: 'Write/Update',
-        description: 'How fast the data models writes and updates data.',
+        description: 'How fast data is written and updated.',
       },
       {
         name: 'Scalability',
-        description: 'How well the data model can scale up to support more intensive loads.',
+        description: 'How well the database can scale up to support more intensive loads.',
       },
     ]
   },
   {
     name: 'Transactions',
-    description: 'To what extent the data model can perform transactions, and how well those transactions perform.'
+    description: 'Whether the database should support transactions or not. A transaction is an all or nothing update, where a series of statements are either atomically updated (updated from the same snapshot) or it is discarded.'
   },
 ]
 
