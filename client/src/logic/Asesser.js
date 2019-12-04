@@ -41,27 +41,6 @@ const dummyData = [
   },
 ]
 
-// const exampleJSON = {
-//   "userPreference": {
-// 		"level1": [
-// 				["1", "1/4", "5"],
-// 				["4", "1", "9"],
-// 				["1/5", "1/9", "1"]
-// 		],
-// 		"level2Data": [
-// 			["1", "1/9", "1/3"],
-// 			["9", "1", "5"],
-// 			["3", "1/5", "1"]
-// 		],
-// 		"level2Performance": [
-// 			["1", "7", "3"],
-// 			["1/7", "1", "1/5"],
-// 			["1/3", "5", "1"]
-// 		]
-// 	},
-// 	"force": false
-// }
-
 export default class Asesser {
 
   constructor(criteria) {
@@ -94,6 +73,10 @@ export default class Asesser {
     }
     this.index = 0
     this.assessed = true
+  }
+
+  getNumberOfAssessments() {
+    return this.criteriaList.length
   }
 
   _getComparisonList(arr, criteria) {

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <p class="progress-indicator">{{ currentIndex + 1 }}/{{ totalQuestions }}</p>
     <h2>How important is {{ main.name }} compared to {{ secondary.name }}?</h2>
     <div id="carousel">
       <Alternative v-bind:name="main.name" v-bind:description="main.description" />
@@ -37,6 +38,8 @@ export default {
       errorMessage: undefined,
       assesser: null,
       assessments: [],
+      currentIndex: 0,
+      totalQuestions: 0,
       main: {
         name: '...',
         description: '......'
@@ -60,6 +63,8 @@ export default {
     },
     init() {
       this.assesser = new Assesser()
+      this.currentIndex = 0
+      this.totalQuestions = this.assesser.getNumberOfAssessments()
       const { mainCriteria, secondaryCriteria } = this.assesser.getNextPair()
       this.main = mainCriteria
       this.secondary = secondaryCriteria
@@ -69,6 +74,7 @@ export default {
         const {mainCriteria, secondaryCriteria} = this.assesser.getNextPair()
         this.main = mainCriteria
         this.secondary = secondaryCriteria
+        this.currentIndex++
       } else {
         const err = new Error('Done assessing')
         err.done = true
@@ -125,5 +131,10 @@ export default {
   .error-message {
     font-weight: bold;
     color: darkred;
+  }
+
+  .progress-indicator {
+    font-weight: lighter;
+    font-style: italic;
   }
 </style>
