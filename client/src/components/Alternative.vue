@@ -17,5 +17,6 @@ export default {
 <style scoped>
   .alternative {
     text-align: center;
+    padding: 40px;
   }
 </style>
