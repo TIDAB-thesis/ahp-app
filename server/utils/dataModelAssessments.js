@@ -29,18 +29,18 @@ module.exports = {
     [math.fraction(1,5), 1, math.fraction(1,5), 1, 1]
   ],
   "writeUpdate": [
-    [1, 5, 5, 1, 9],
-    [math.fraction(1,5), 1, 1, math.fraction(1,5), 5],
-    [math.fraction(1,5), 1, 1, math.fraction(1,5), 5],
-    [1, 5, 5, 1, 9],
-    [math.fraction(1,9), math.fraction(1,5), math.fraction(1,5), math.fraction(1,9), 1]
+    [1, 1, 5, 1, 9],
+    [1, 1, 5, 1, 9],
+    [math.fraction(1,5), math.fraction(1,5), 1, math.fraction(1,5), 5],
+    [1, 1, 5, 1, 9],
+    [math.fraction(1,9), math.fraction(1,9), math.fraction(1,5), math.fraction(1,9), 1]
   ],
   "scalability": [
-    [1, 1, 9, 1, 1],
-    [1, 1, 9, 1, 1],
-    [math.fraction(1,9), math.fraction(1,9), 1, math.fraction(1,9), math.fraction(1,9)],
-    [1, 1, 9, 1, 1],
-    [1, 1, 9, 1, 1],
+    [1, 1, 9, 1, 2],
+    [1, 1, 9, 1, 2],
+    [math.fraction(1,9), math.fraction(1,9), 1, math.fraction(1,9), math.fraction(1,7)],
+    [1, 1, 9, 1, 2],
+    [math.fraction(1,2), math.fraction(1,2), 7, math.fraction(1,2), 1],
   ],
   "transaction": [
     [1, 9, 1, 1, 1],
