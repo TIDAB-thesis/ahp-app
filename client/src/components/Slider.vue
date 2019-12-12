@@ -7,7 +7,7 @@
       <div class="label-container"><span class="label main plus-one">Moderate</span></div>
       <div class="label-container"><span class="label">Equal</span></div>
       <div class="label-container"><span class="label secondary minus-one">Moderate</span></div>
-      <div class="label-container"><span class="label secondary minus-two">Storng</span></div>
+      <div class="label-container"><span class="label secondary minus-two">Strong</span></div>
       <div class="label-container"><span class="label secondary minus-three">Very Strong</span></div>
       <div class="label-container"><span class="label secondary">Extremely</span></div>
     </div>
