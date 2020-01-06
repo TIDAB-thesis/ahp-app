@@ -26,8 +26,8 @@
         "description": "How fast the data models reads data."
       },
       {
-        "name": "Write/Update",
-        "description": "How fast the data models writes and updates data."
+        "name": "Write",
+        "description": "How fast the data models inserts and updates data."
       },
       {
         "name": "Scalability",

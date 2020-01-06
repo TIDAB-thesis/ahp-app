@@ -26,7 +26,7 @@ const dummyData = [
         description: 'How fast the data is read.',
       },
       {
-        name: 'Write/Update',
+        name: 'Write',
         description: 'How fast data is inserted and updated.',
       },
       {
