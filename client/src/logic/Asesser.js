@@ -19,7 +19,7 @@ const dummyData = [
   },
   {
     name: 'Performance',
-    description: 'How fast the database is and how much load it can take. This includes the write/update and read performance (in terms of speed), as well as its ability to scale up to support more intensive loads.',
+    description: 'How fast the database is and how much load it can take. This includes the write and read performance (in terms of speed), as well as its ability to scale up to support more intensive loads.',
     subcriteria: [
       {
         name: 'Read',
@@ -27,7 +27,7 @@ const dummyData = [
       },
       {
         name: 'Write/Update',
-        description: 'How fast data is written and updated.',
+        description: 'How fast data is inserted and updated.',
       },
       {
         name: 'Scalability',
